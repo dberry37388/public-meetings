@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Meeting;
+use App\Models\Rsvp;
 use App\Models\User;
 use Database\Factories\MeetingFactory;
 use Illuminate\Database\Seeder;
@@ -18,5 +19,6 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(1)->create();
         Meeting::factory(10)->create();
+        Rsvp::factory(40)->create();
     }
 }
