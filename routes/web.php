@@ -19,3 +19,7 @@ Route::get('/', function () {
 
 Route::get('/meetings', 'App\Http\Controllers\MeetingsController@index')->middleware('auth.basic');
 Route::get('/meetings/{id}', 'App\Http\Controllers\MeetingsController@show')->middleware('auth.basic');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
