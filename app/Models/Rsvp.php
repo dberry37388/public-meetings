@@ -9,6 +9,12 @@ class Rsvp extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'email',
+        'response',
+        'meeting_id'
+    ];
+
     /**
      * The meeting the RSVP response belongs to.
      *

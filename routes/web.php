@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Meetings\ListMeetingsController;
+use App\Http\Controllers\Meetings\RsvpToMeetingController;
 use App\Http\Controllers\Meetings\ShowMeetingController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,7 @@ Route::get('/', function () {
 Route::prefix('meetings')->group(function () {
 
     Route::get('{meetingId}/public', ShowMeetingController::class)->name('showPublicMeeting');
+    Route::post('{meetingId}/rsvp', RsvpToMeetingController::class)->name('rsvpToMeeting');
 
     Route::middleware('auth')->group(function () {
         Route::get('/', ListMeetingsController::class)->name('listMeetings');

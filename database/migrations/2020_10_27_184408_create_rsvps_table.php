@@ -19,8 +19,6 @@ class CreateRsvpsTable extends Migration
             $table->string('email', 320);
             $table->enum('response', ['Yes', 'No', 'Maybe']);
             $table->timestamps();
-
-            $table->unique(['meeting_id', 'email']);
         });
     }
 
