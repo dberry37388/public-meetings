@@ -21,6 +21,8 @@ Route::get('/', function () {
 
 Route::prefix('meetings')->group(function () {
 
+    Route::get('{meetingId}/public', ShowMeetingController::class)->name('showPublicMeeting');
+
     Route::middleware('auth')->group(function () {
         Route::get('/', ListMeetingsController::class)->name('listMeetings');
         Route::get('{meetingId}', ShowMeetingController::class)->name('showMeeting');
