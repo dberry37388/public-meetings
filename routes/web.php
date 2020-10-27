@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Meetings\ListMeetingsController;
+use App\Http\Controllers\Meetings\ShowMeetingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +19,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/meetings', 'App\Http\Controllers\MeetingsController@index')->middleware('auth.basic');
-Route::get('/meetings/{id}', 'App\Http\Controllers\MeetingsController@show')->middleware('auth.basic');
+Route::prefix('meetings')->group(function () {
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/', ListMeetingsController::class)->name('listMeetings');
+        Route::get('{meetingId}', ShowMeetingController::class)->name('showMeeting');
+    });
+});
 
 Auth::routes();
 
