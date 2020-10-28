@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Agenda;
 use App\Models\Meeting;
 use App\Models\Rsvp;
 use App\Models\User;
@@ -20,5 +21,6 @@ class DatabaseSeeder extends Seeder
         User::factory(1)->create();
         Meeting::factory(10)->create();
         Rsvp::factory(40)->create();
+        Agenda::factory(50)->create();
     }
 }

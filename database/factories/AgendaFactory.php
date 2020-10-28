@@ -2,18 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Agenda;
 use App\Models\Meeting;
-use App\Models\Rsvp;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-class RsvpFactory extends Factory
+class AgendaFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Rsvp::class;
+    protected $model = Agenda::class;
 
     /**
      * Define the model's default state.
@@ -26,8 +27,8 @@ class RsvpFactory extends Factory
 
         return [
             'meeting_id' => $this->faker->randomElement($meetingIds),
-            'email' => $this->faker->safeEmail,
-            'response' => $this->faker->randomElement(['Yes', 'No', 'Maybe'])
+            'topic' => 'Item #' . $this->faker->numberBetween(0, 1000),
+            'description' => $this->faker->sentences(6, true),
         ];
     }
 }

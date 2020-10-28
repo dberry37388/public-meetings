@@ -35,9 +35,9 @@
         </div>
 
         <div class="row mt-5">
-            <div class="col-md-7 col-12">
+            <div class="col-md-7 col-12 mb-sm-5">
 
-                <h2>Agenda</h2>
+                @include('meetings.partials.agenda-items')
 
             </div>
 

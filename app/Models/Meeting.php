@@ -20,4 +20,14 @@ class Meeting extends Model
     {
         return $this->hasMany(Rsvp::class);
     }
+
+    /**
+     * Agenda Items related to this meeting
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function agendaItems()
+    {
+        return $this->hasMany(Agenda::class);
+    }
 }
