@@ -30,7 +30,7 @@ class MeetingFactory extends Factory
             'description' => $this->faker->sentences(6, true),
             'location' => $this->faker->address,
             'start' => $start,
-            'end' => $this->faker->dateTimeBetween($start, '+2 months'),
+            'end' => strtotime('+2 hours', $start->getTimestamp()),
         ];
     }
 }

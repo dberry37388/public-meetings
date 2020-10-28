@@ -9,77 +9,44 @@
         </div>
 
         <div class="row mb-4">
-            <div class="col">
-                <div class="mb-2">
-                    <h1>{{$meeting->title}}</h1>
-                </div>
+            <div class="col-12">
+                <h1>
+                    {{$meeting->title}}
+                </h1>
 
-                <div class="meeting-meta">
+                <div class="mt-3 meeting-meta-info">
                     <div>
-                        {{$meeting->location}}
+                        <i class="fa fa-calendar mr-2"></i> {{ $meeting->start->format('F j, Y') }}
                     </div>
 
                     <div>
-                        {{$meeting->start->format('Y M d @ H:i')}} - {{$meeting->end->format('Y M d @ H:i')}}
+                        <i class="fa fa-clock-o mr-2"></i> {{$meeting->start->format('g:i a')}} - {{$meeting->end->format('h:i a')}}
+                    </div>
+
+                    <div>
+                        <i class="fa fa-map mr-2"></i> {{$meeting->location}}
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div>
+                <div class="mt-3">
                     {{$meeting->description}}
                 </div>
-
-                <!-- here is where a form allowing users to toggle on/off the public meeting page - you will need to handle that form inside of a controller -->
             </div>
         </div>
 
         <div class="row mt-5">
-            <div class="col-12">
-                <h2> RSVPs</h2>
+            <div class="col-md-7 col-12">
 
-                <ul>
-                    @forelse($meeting->rsvps as $rsvp)
-                        <li>{{ $rsvp->email }}, {{ $rsvp->response }}</li>
-                    @empty
-                        <li>No one has responded to this event.</li>
-                    @endforelse
-                </ul>
+                <h2>Agenda</h2>
 
-                <form action="{{ route('rsvpToMeeting', $meeting->id) }}" method="post">
+            </div>
 
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" autocomplete="email" placeholder="Enter email">
+            <div class="col-md-5 col-12">
+                @include('meetings.partials.rsvp-form')
 
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                <hr>
 
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Can You Attend?</label>
-                                <select name="response" id="response" class="form-control">
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                    <option value="Maybe">Maybe</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">RSVP</button>
-
-                    @csrf
-                </form>
+                @include('meetings.partials.rsvp-list')
             </div>
         </div>
     </div>
