@@ -9,7 +9,15 @@ class Meeting extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'agenda_is_private'
+    ];
+
     protected $dates = ['start', 'end'];
+
+    protected $with = [
+        'agendaItems'
+    ];
 
     /**
      * RSVP responses for the related model

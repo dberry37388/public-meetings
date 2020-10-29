@@ -31,6 +31,7 @@ class MeetingFactory extends Factory
             'location' => $this->faker->address,
             'start' => $start,
             'end' => strtotime('+2 hours', $start->getTimestamp()),
+            'is_agenda_private' => rand(0,1),
         ];
     }
 }

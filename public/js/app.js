@@ -1954,6 +1954,18 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     toggleShow: function toggleShow() {
       this.edit = !this.edit;
+    },
+    updateItem: function updateItem() {
+      var _this = this;
+
+      axios.put('/api/meetings/update-agenda-item', {
+        agenda_id: this.item.id,
+        topic: this.topic,
+        description: this.description
+      }).then(function (response) {
+        console.log(response);
+        _this.edit = false;
+      });
     }
   }
 });
@@ -2000,15 +2012,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'AgendaItems',
   props: {
-    items: Array,
+    meeting: Object,
     authorized: Number
   },
   data: function data() {
     return {
-      currentItems: this.items,
+      items: this.meeting.agenda_items,
+      isPrivate: this.meeting.is_agenda_private,
       addItem: false,
       newTopic: '',
       newDescription: '',
@@ -2020,14 +2050,33 @@ __webpack_require__.r(__webpack_exports__);
       this.addItem = !this.addItem;
     },
     addItemToAgenda: function addItemToAgenda() {
-      this.currentItems.push({
+      var _this = this;
+
+      axios.post('/api/meetings/add-item', {
+        meeting_id: this.meeting.id,
         topic: this.newTopic,
         description: this.newDescription
+      }).then(function (response) {
+        _this.items.push({
+          topic: _this.newTopic,
+          description: _this.newDescription
+        });
+
+        _this.newTopic = '';
+        _this.newDescription = '';
+        _this.addItem = false;
+        _this.showSuccessMessage = true;
       });
-      this.newTopic = '';
-      this.newDescription = '';
-      this.addItem = false;
-      this.showSuccessMessage = true;
+    },
+    toggleAgendaPrivacy: function toggleAgendaPrivacy() {
+      var isPrivate = !this.isPrivate;
+      axios.post('/api/meetings/make-agenda-private', {
+        meeting_id: this.meeting.id,
+        privacy: isPrivate
+      }).then(function (response) {
+        console.log(response);
+      });
+      this.isPrivate = isPrivate;
     }
   }
 });
@@ -37660,7 +37709,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "button",
-          { staticClass: "btn btn-sm btn-dark", on: { click: _vm.toggleShow } },
+          {
+            staticClass: "btn btn-sm btn-dark mt-2",
+            on: { click: _vm.toggleShow }
+          },
           [_vm._v("Edit")]
         )
       ]
@@ -37732,7 +37784,7 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-sm btn-dark",
-              on: { click: _vm.toggleShow }
+              on: { click: _vm.updateItem }
             },
             [_vm._v("Update")]
           ),
@@ -37773,137 +37825,195 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "pr-md-4", attrs: { id: "agendaItems" } }, [
-    _c("h2", { staticClass: "mb-4" }, [_vm._v("Meeting Agenda")]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: !_vm.addItem,
-            expression: "!addItem"
-          }
-        ],
-        staticClass: "btn btn-sm btn-primary mb-2",
-        on: { click: _vm.toggleShow }
-      },
-      [_vm._v("Add Item")]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.showSuccessMessage,
-            expression: "showSuccessMessage"
-          }
-        ],
-        staticClass: "alert alert-success"
-      },
-      [_vm._v("New Item was added!")]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.addItem,
-            expression: "addItem"
-          }
-        ]
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("input", {
-            directives: [
+    _c("div", { staticClass: "d-flex justify-content-between mb-4" }, [
+      _c("h2", [_vm._v("Meeting Agenda")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "btn-group" }, [
+        _vm.authorized
+          ? _c(
+              "button",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newTopic,
-                expression: "newTopic"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.newTopic },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.newTopic = $event.target.value
-              }
-            }
-          })
-        ]),
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.addItem,
+                    expression: "!addItem"
+                  }
+                ],
+                staticClass: "btn btn-sm btn-primary mb-2",
+                on: { click: _vm.toggleShow }
+              },
+              [_vm._v("Add Item")]
+            )
+          : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "form-group mt-2" }, [
-          _c("textarea", {
-            directives: [
+        _vm.authorized && !_vm.isPrivate
+          ? _c(
+              "button",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.newDescription,
-                expression: "newDescription"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { rows: "4" },
-            domProps: { value: _vm.newDescription },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.newDescription = $event.target.value
-              }
-            }
-          })
-        ]),
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.addItem,
+                    expression: "!addItem"
+                  }
+                ],
+                staticClass: "btn btn-sm btn-default mb-2",
+                on: { click: _vm.toggleAgendaPrivacy }
+              },
+              [_vm._v("Make Private")]
+            )
+          : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
+        _vm.authorized && _vm.isPrivate
+          ? _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: !_vm.addItem,
+                    expression: "!addItem"
+                  }
+                ],
+                staticClass: "btn btn-sm btn-default mb-2",
+                on: { click: _vm.toggleAgendaPrivacy }
+              },
+              [_vm._v("Make Public")]
+            )
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.authorized
+      ? _c("div", [
           _c(
-            "button",
+            "div",
             {
-              staticClass: "btn btn-sm btn-dark",
-              on: { click: _vm.addItemToAgenda }
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showSuccessMessage,
+                  expression: "showSuccessMessage"
+                }
+              ],
+              staticClass: "alert alert-success"
             },
-            [_vm._v("Update")]
+            [_vm._v("New Item was added!")]
           ),
           _vm._v(" "),
           _c(
-            "button",
+            "div",
             {
-              staticClass: "btn btn-sm btn-danger",
-              on: { click: _vm.toggleShow }
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.addItem,
+                  expression: "addItem"
+                }
+              ]
             },
-            [_vm._v("Cancel")]
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newTopic,
+                      expression: "newTopic"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.newTopic },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newTopic = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group mt-2" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newDescription,
+                      expression: "newDescription"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { rows: "4" },
+                  domProps: { value: _vm.newDescription },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newDescription = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-dark",
+                    on: { click: _vm.addItemToAgenda }
+                  },
+                  [_vm._v("Update")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-danger",
+                    on: { click: _vm.toggleShow }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ])
+            ]
           )
         ])
-      ]
-    ),
+      : _vm._e(),
     _vm._v(" "),
-    _c(
-      "ul",
-      { staticClass: "list-group" },
-      _vm._l(_vm.currentItems, function(agendaItem, index) {
-        return _c(
-          "li",
-          { staticClass: "list-group-item" },
-          [_c("agenda-item", { attrs: { item: agendaItem } })],
-          1
-        )
-      }),
-      0
-    )
+    _vm.isPrivate && !_vm.authorized
+      ? _c("div", [
+          _c("div", { staticClass: "alert alert-info" }, [
+            _vm._v(
+              "\n            The agenda for this meeting is private.\n        "
+            )
+          ])
+        ])
+      : _c("div", [
+          _c(
+            "ul",
+            { staticClass: "list-group" },
+            _vm._l(_vm.items, function(agendaItem, index) {
+              return _c(
+                "li",
+                { staticClass: "list-group-item" },
+                [_c("agenda-item", { attrs: { item: agendaItem } })],
+                1
+              )
+            }),
+            0
+          )
+        ])
   ])
 }
 var staticRenderFns = []

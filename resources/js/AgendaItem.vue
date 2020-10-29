@@ -9,7 +9,7 @@
                 {{ description }}
             </p>
 
-            <button class="btn btn-sm btn-dark" @click="toggleShow">Edit</button>
+            <button class="btn btn-sm btn-dark mt-2" @click="toggleShow">Edit</button>
         </div>
 
         <div v-show="edit">
@@ -22,7 +22,7 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-sm btn-dark" @click="toggleShow">Update</button>
+                <button class="btn btn-sm btn-dark" @click="updateItem">Update</button>
                 <button class="btn btn-sm btn-danger" @click="toggleShow">Cancel</button>
             </div>
         </div>
@@ -46,6 +46,16 @@
             toggleShow() {
                 this.edit = !this.edit
             },
+            updateItem() {
+                axios.put('/api/meetings/update-agenda-item', {
+                    agenda_id: this.item.id,
+                    topic: this.topic,
+                    description: this.description
+                }).then(response => {
+                    console.log(response);
+                    this.edit = false;
+                });
+            }
         },
     }
 </script>

@@ -21,6 +21,7 @@ class CreateMeetingsTable extends Migration
             $table->timestamp('start')->nullable(true);
             $table->timestamp('end')->nullable(true);
             $table->string('location');
+            $table->boolean('is_agenda_private')->default(false);
         });
     }
 
