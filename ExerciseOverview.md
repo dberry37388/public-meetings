@@ -19,9 +19,9 @@ The attached code will provide a basic `Meeting` model that includes title, desc
 - [x] At the end of the exercise, we should have a `/meetings/{id}` page that requires authentication and a `/meetings/{id}/public` page that does not require authentication.
 - [x] The public page should list the title, description, location, and time and date of the meeting, and user RSVPs
 - [x] From the public meeting page, a visiting user should be able to enter in an arbitrary email address, name, and an RSVP of "Yes", "No', or "Maybe" (inside Boardable this would obviously require authentication, but any name/email will do for now)
-- [ ] A user should be able to enter an Agenda of items to cover (can be free-form text). The user should be able to toggle whether or not the Agenda is shown on the public page
+- [x] A user should be able to enter an Agenda of items to cover (can be free-form text). The user should be able to toggle whether or not the Agenda is shown on the public page
 - [ ] (If applying for a Senior developer position only) The application should be deployed on a publicly-available server.
-- [ ] Please scope and work on 2 additional features of your choice.
+- [x] Please scope and work on 2 additional features of your choice.
 
 For example, if your strengths are on the front end, add some styles to these bland pages and make it feel more interactive. If your strengths are on the backend, you could add a meeting reminder service that uses a queue to send an email (through a service or just an entry in a database).
 
